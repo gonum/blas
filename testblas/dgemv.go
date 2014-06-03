@@ -561,7 +561,11 @@ func dgemvbad(t *testing.T, test DgemvCase, cas DgemvSubcase, i int, blasser Dge
 	aFlatRow := flatten(a)
 	ldaRow := test.n
 
+<<<<<<< HEAD
 	f := func() {
+=======
+	f = func() {
+>>>>>>> Delete blas.Order from testing code
 		blasser.Dgemv(312, test.m, test.n, cas.alpha, aFlatRow, ldaRow, x, test.incX, cas.beta, y, test.incY)
 	}
 	if !panics(f) {
