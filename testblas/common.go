@@ -3,6 +3,8 @@ package testblas
 import (
 	"math"
 	"testing"
+
+	"github.com/gonum/blas"
 )
 
 // throwPanic will throw unexpected panics if true, or will just report them as errors if false
@@ -136,4 +138,26 @@ func unflatten(a []float64, m, n int) [][]float64 {
 		}
 	}
 	return s
+}
+
+func flattenTriBanded(a [][]float64, k int, ul blas.Uplo) []float64 {
+	n := len(a)
+	if n != len(a[0]) {
+		panic("tri banded must be square")
+	}
+	aflat := make([]float64, (k+1)*n) // a is an lda x n matrix
+	if ul == blas.Upper {
+		for j := 0; j < n; j++ {
+			m := k - j
+			min := j - k
+			if j-k < 0 {
+				min = 0
+			}
+			for i := min; i < j+1; i++ {
+				aflat[(m+i)*n+j] = a[i][j]
+			}
+		}
+		return aflat
+	}
+	panic("not coded for lower")
 }

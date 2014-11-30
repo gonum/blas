@@ -1,6 +1,10 @@
 package goblas
 
-import "github.com/gonum/blas"
+import (
+	"fmt"
+
+	"github.com/gonum/blas"
+)
 
 // See http://www.netlib.org/lapack/explore-html/d4/de1/_l_i_c_e_n_s_e_source.html
 // for more license information
@@ -8,6 +12,19 @@ import "github.com/gonum/blas"
 var _ blas.Float64Level2 = Blasser
 
 // TODO: Need to think about loops when doing row-major. Change after tests?
+
+/*
+	Accessing guidelines:
+	Dense matrices are laid out in row-major order. [a11 a12 ... a1n a21 a22 ... amn]
+	dense(i, j) = dense[i*ld + j]
+
+	Banded matrices are laid out in a compact format as described in
+	http://www.netlib.org/lapack/lug/node124.html
+	banded(i, j) = banded(ku+i-j, j) = banded((ku+i-j)*n + j) // TODO: Verify
+
+	Triangle banded is like the above except without the other half stored
+	(leading diagonal first for lower triangular, last for upper triangular)
+*/
 
 const (
 	mLT0         string = "referenceblas: m < 0"
@@ -937,10 +954,70 @@ func (bl Blas) Dtpmv(ul blas.Uplo, tA blas.Transpose, d blas.Diag, n int, ap []f
 	}
 }
 
-//TODO: Not yet implemented Level 2 routines.
+// Dtbsv solves A * x = b where A is an n x n triangular banded matrix with (k+1)
+// diagonals. The result in stored in-place into x. The actual slice a represents a
+// triangular banded matrix that is lda x n in size.
 func (Blas) Dtbsv(ul blas.Uplo, tA blas.Transpose, d blas.Diag, n, k int, a []float64, lda int, x []float64, incX int) {
-	panic("referenceblas: function not implemented")
+	// Check arguments
+	if ul != blas.Lower && ul != blas.Upper {
+		panic(badUplo)
+	}
+	if tA != blas.NoTrans && tA != blas.Trans && tA != blas.ConjTrans {
+		panic(badTranspose)
+	}
+	if d != blas.NonUnit && d != blas.Unit {
+		panic(badDiag)
+	}
+	if n < 0 {
+		panic(nLT0)
+	}
+	if lda < k+1 {
+		panic("lda must be greater than k+1")
+	}
+	if incX == 0 {
+		panic(zeroInc)
+	}
+	if n == 0 {
+		return
+	}
+	var kx int
+	if incX < 0 {
+		kx = -(n - 1) * incX
+	} else {
+		kx = 0
+	}
+	_ = kx
+
+	nonunit := d == blas.NonUnit
+
+	// Form x = A^-1 x
+	if tA == blas.NoTrans {
+		if ul == blas.Upper {
+			if incX == 1 {
+				for j := n - 1; j >= 0; j-- {
+					if nonunit {
+						x[j] = x[j] / a[k*n+j]
+					}
+					l := k - j
+					tmp := x[j]
+					min := j - k
+					if j-k < 0 {
+						min = 0
+					}
+					//fmt.Println(j-2, min)
+					for i := j - 1; i >= min; i-- {
+						fmt.Println(i, j)
+						x[i] -= tmp * a[(l+i)*n+j]
+					}
+				}
+				return
+			}
+		}
+	}
+
 }
+
+//TODO: Not yet implemented Level 2 routines.
 func (Blas) Dtpsv(ul blas.Uplo, tA blas.Transpose, d blas.Diag, n int, ap []float64, x []float64, incX int) {
 	panic("referenceblas: function not implemented")
 }
