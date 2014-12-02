@@ -3,8 +3,6 @@ package testblas
 import (
 	"math"
 	"testing"
-
-	"github.com/gonum/blas"
 )
 
 // throwPanic will throw unexpected panics if true, or will just report them as errors if false
@@ -140,24 +138,38 @@ func unflatten(a []float64, m, n int) [][]float64 {
 	return s
 }
 
-func flattenTriBanded(a [][]float64, k int, ul blas.Uplo) []float64 {
-	n := len(a)
-	if n != len(a[0]) {
-		panic("tri banded must be square")
+// turns a dense banded slice of slice into the compact banded matrix format
+func flattenBanded(a [][]float64, ku, kl int) []float64 {
+	m := len(a)
+	n := len(a[0])
+	if ku < 0 || kl < 0 {
+		panic("testblas: negative band length")
 	}
-	aflat := make([]float64, (k+1)*n) // a is an lda x n matrix
-	if ul == blas.Upper {
-		for j := 0; j < n; j++ {
-			m := k - j
-			min := j - k
-			if j-k < 0 {
-				min = 0
-			}
-			for i := min; i < j+1; i++ {
-				aflat[(m+i)*n+j] = a[i][j]
-			}
+
+	// banded size is minimum of m and n because otherwise just have a bunch of zeros
+	nRows := m
+	if m < n {
+		nRows = n
+	}
+	nCols := (ku + kl + 1)
+	aflat := make([]float64, nRows*nCols)
+	// loop over the rows, and then the bands
+	// elements in the ith row stay in the ith row
+	// order in bands is kept
+	for i := 0; i < nRows; i++ {
+		min := -kl
+		if i-kl < 0 {
+			min = -i
 		}
-		return aflat
+		max := ku
+		if i+ku >= n {
+			max = n - i - 1
+		}
+		for j := min; j <= max; j++ {
+			col := kl + j
+			aflat[i*nCols+col] = a[i][i+j]
+		}
 	}
-	panic("not coded for lower")
+	return aflat
+
 }

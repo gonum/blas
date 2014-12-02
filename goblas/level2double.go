@@ -1,17 +1,11 @@
 package goblas
 
-import (
-	"fmt"
-
-	"github.com/gonum/blas"
-)
+import "github.com/gonum/blas"
 
 // See http://www.netlib.org/lapack/explore-html/d4/de1/_l_i_c_e_n_s_e_source.html
 // for more license information
 
 var _ blas.Float64Level2 = Blasser
-
-// TODO: Need to think about loops when doing row-major. Change after tests?
 
 /*
 	Accessing guidelines:
@@ -19,24 +13,45 @@ var _ blas.Float64Level2 = Blasser
 	dense(i, j) = dense[i*ld + j]
 
 	Banded matrices are laid out in a compact format as described in
-	http://www.netlib.org/lapack/lug/node124.html
-	banded(i, j) = banded(ku+i-j, j) = banded((ku+i-j)*n + j) // TODO: Verify
+	http://www.crest.iu.edu/research/mtl/reference/html/banded.html
+	(the row-major version)
+	In short, all of the rows are scrunched removing the zeros and aligning
+	the diagonals
 
-	Triangle banded is like the above except without the other half stored
-	(leading diagonal first for lower triangular, last for upper triangular)
+	So, for the matrix
+	[
+	  1  2  3  0  0  0
+	  4  5  6  7  0  0
+	  0  8  9  10 11 0
+	  0  0  12 13 14 15
+	  0  0  0  16 17 18
+	  0  0  0  0  19 20
+	  ]
+
+	The layout is
+	[
+	  *  1  2  3
+	  4  5  6  7
+	  8  9  10 11
+	  12 13 14 15
+	  16 17 18 *
+	  19 20 *  *
+	]
+	where entries marked * are never accessed
 */
 
 const (
-	mLT0         string = "referenceblas: m < 0"
-	nLT0         string = "referenceblas: n < 0"
-	kLT0         string = "referenceblas: k < 0"
-	badUplo      string = "referenceblas: illegal triangularization"
-	badTranspose string = "referenceblas: illegal transpose"
-	badDiag      string = "referenceblas: illegal diag"
-	badSide      string = "referenceblas: illegal side"
-	badLdaRow    string = "lda must be greater than max(1,n) for row major"
-	badLdaCol    string = "lda must be greater than max(1,m) for col major"
-	badLda       string = "lda must be greater than max(1,n)"
+	mLT0          string = "referenceblas: m < 0"
+	nLT0          string = "referenceblas: n < 0"
+	kLT0          string = "referenceblas: k < 0"
+	badUplo       string = "referenceblas: illegal triangularization"
+	badTranspose  string = "referenceblas: illegal transpose"
+	badDiag       string = "referenceblas: illegal diag"
+	badSide       string = "referenceblas: illegal side"
+	badLdaRow     string = "lda must be greater than max(1,n) for row major"
+	badLdaCol     string = "lda must be greater than max(1,m) for col major"
+	badLda        string = "lda must be greater than max(1,n)"
+	badLdaTriBand string = "lda must be greater than k+1"
 )
 
 func max(a, b int) int {
@@ -954,11 +969,10 @@ func (bl Blas) Dtpmv(ul blas.Uplo, tA blas.Transpose, d blas.Diag, n int, ap []f
 	}
 }
 
-// Dtbsv solves A * x = b where A is an n x n triangular banded matrix with (k+1)
-// diagonals. The result in stored in-place into x. The actual slice a represents a
-// triangular banded matrix that is lda x n in size.
+// Dtbsv solves A * x = b where A is a triangular banded matrix with k diagonals
+// above the main diagonal. A has compact banded storage.
+// The result in stored in-place into x.
 func (Blas) Dtbsv(ul blas.Uplo, tA blas.Transpose, d blas.Diag, n, k int, a []float64, lda int, x []float64, incX int) {
-	// Check arguments
 	if ul != blas.Lower && ul != blas.Upper {
 		panic(badUplo)
 	}
@@ -972,7 +986,7 @@ func (Blas) Dtbsv(ul blas.Uplo, tA blas.Transpose, d blas.Diag, n, k int, a []fl
 		panic(nLT0)
 	}
 	if lda < k+1 {
-		panic("lda must be greater than k+1")
+		panic(badLdaTriBand)
 	}
 	if incX == 0 {
 		panic(zeroInc)
@@ -986,35 +1000,177 @@ func (Blas) Dtbsv(ul blas.Uplo, tA blas.Transpose, d blas.Diag, n, k int, a []fl
 	} else {
 		kx = 0
 	}
-	_ = kx
 
 	nonunit := d == blas.NonUnit
 
 	// Form x = A^-1 x
+	// Several cases below use subslices for speed improvement. The incX != 1
+	// cases usually do not because incX may be negative
 	if tA == blas.NoTrans {
 		if ul == blas.Upper {
 			if incX == 1 {
-				for j := n - 1; j >= 0; j-- {
+				for i := n - 1; i >= 0; i-- {
+					bands := k
+					if i+bands >= n {
+						bands = n - i - 1
+					}
+					atmp := a[i*lda+1:]
+					xtmp := x[i+1 : i+bands+1]
+					var sum float64
+					for j, v := range xtmp {
+						sum += v * atmp[j]
+					}
+					x[i] -= sum
 					if nonunit {
-						x[j] = x[j] / a[k*n+j]
-					}
-					l := k - j
-					tmp := x[j]
-					min := j - k
-					if j-k < 0 {
-						min = 0
-					}
-					//fmt.Println(j-2, min)
-					for i := j - 1; i >= min; i-- {
-						fmt.Println(i, j)
-						x[i] -= tmp * a[(l+i)*n+j]
+						x[i] /= a[i*lda]
 					}
 				}
 				return
 			}
+			ix := kx + (n-1)*incX
+			for i := n - 1; i >= 0; i-- {
+				max := k + 1
+				if i+max > n {
+					max = n - i
+				}
+				atmp := a[i*lda:]
+				var (
+					jx  int
+					sum float64
+				)
+				for j := 1; j < max; j++ {
+					jx += incX
+					sum += x[ix+jx] * atmp[j]
+				}
+				x[ix] -= sum
+				if nonunit {
+					x[ix] /= atmp[0]
+				}
+				ix -= incX
+			}
+			return
 		}
+		if incX == 1 {
+			for i := 0; i < n; i++ {
+				bands := k
+				if i-k < 0 {
+					bands = i
+				}
+				atmp := a[i*lda+k-bands:]
+				xtmp := x[i-bands : i]
+				var sum float64
+				for j, v := range xtmp {
+					sum += v * atmp[j]
+				}
+				x[i] -= sum
+				if nonunit {
+					x[i] /= atmp[bands]
+				}
+			}
+			return
+		}
+		ix := kx
+		for i := 0; i < n; i++ {
+			bands := k
+			if i-k < 0 {
+				bands = i
+			}
+			atmp := a[i*lda+k-bands:]
+			var (
+				sum float64
+				jx  int
+			)
+			for j := 0; j < bands; j++ {
+				sum += x[ix-bands*incX+jx] * atmp[j]
+				jx += incX
+			}
+			x[ix] -= sum
+			if nonunit {
+				x[ix] /= atmp[bands]
+			}
+			ix += incX
+		}
+		return
 	}
-
+	// tA == blas.Transpose
+	if ul == blas.Upper {
+		if incX == 1 {
+			for i := 0; i < n; i++ {
+				bands := k
+				if i-k < 0 {
+					bands = i
+				}
+				var sum float64
+				for j := 0; j < bands; j++ {
+					sum += x[i-bands+j] * a[(i-bands+j)*lda+bands-j]
+				}
+				x[i] -= sum
+				if nonunit {
+					x[i] /= a[i*lda]
+				}
+			}
+			return
+		}
+		ix := kx
+		for i := 0; i < n; i++ {
+			bands := k
+			if i-k < 0 {
+				bands = i
+			}
+			var (
+				sum float64
+				jx  int
+			)
+			for j := 0; j < bands; j++ {
+				sum += x[ix-bands*incX+jx] * a[(i-bands+j)*lda+bands-j]
+				jx += incX
+			}
+			x[ix] -= sum
+			if nonunit {
+				x[ix] /= a[i*lda]
+			}
+			ix += incX
+		}
+		return
+	}
+	if incX == 1 {
+		for i := n - 1; i >= 0; i-- {
+			bands := k
+			if i+bands >= n {
+				bands = n - i - 1
+			}
+			var sum float64
+			xtmp := x[i+1 : i+1+bands]
+			for j, v := range xtmp {
+				sum += v * a[(i+j+1)*lda+k-j-1]
+			}
+			x[i] -= sum
+			if nonunit {
+				x[i] /= a[i*lda+k]
+			}
+		}
+		return
+	}
+	ix := kx + (n-1)*incX
+	for i := n - 1; i >= 0; i-- {
+		bands := k
+		if i+bands >= n {
+			bands = n - i - 1
+		}
+		var (
+			sum float64
+			jx  int
+		)
+		for j := 0; j < bands; j++ {
+			sum += x[ix+jx+incX] * a[(i+j+1)*lda+k-j-1]
+			jx += incX
+		}
+		x[ix] -= sum
+		if nonunit {
+			x[ix] /= a[i*lda+k]
+		}
+		ix -= incX
+	}
 }
 
 //TODO: Not yet implemented Level 2 routines.
