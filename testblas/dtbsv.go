@@ -199,7 +199,6 @@ func DtbsvTest(t *testing.T, blasser Dtbsver) {
 		} else {
 			aFlat = flattenBanded(test.a, 0, test.k)
 		}
-		//fmt.Println(aFlat)
 		xCopy := sliceCopy(test.x)
 
 		// TODO: Have tests where the banded matrix is constructed explicitly
