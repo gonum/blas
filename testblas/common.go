@@ -137,3 +137,39 @@ func unflatten(a []float64, m, n int) [][]float64 {
 	}
 	return s
 }
+
+// turns a dense banded slice of slice into the compact banded matrix format
+func flattenBanded(a [][]float64, ku, kl int) []float64 {
+	m := len(a)
+	n := len(a[0])
+	if ku < 0 || kl < 0 {
+		panic("testblas: negative band length")
+	}
+
+	// banded size is minimum of m and n because otherwise just have a bunch of zeros
+	nRows := m
+	if m < n {
+		nRows = n
+	}
+	nCols := (ku + kl + 1)
+	aflat := make([]float64, nRows*nCols)
+	// loop over the rows, and then the bands
+	// elements in the ith row stay in the ith row
+	// order in bands is kept
+	for i := 0; i < nRows; i++ {
+		min := -kl
+		if i-kl < 0 {
+			min = -i
+		}
+		max := ku
+		if i+ku >= n {
+			max = n - i - 1
+		}
+		for j := min; j <= max; j++ {
+			col := kl + j
+			aflat[i*nCols+col] = a[i][i+j]
+		}
+	}
+	return aflat
+
+}
