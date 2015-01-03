@@ -7,9 +7,10 @@
 package cblas
 
 import (
-	"github.com/gonum/blas"
 	"math/rand"
 	"testing"
+
+	"github.com/gonum/blas"
 )
 
 const (
