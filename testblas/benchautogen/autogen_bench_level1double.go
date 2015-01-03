@@ -56,25 +56,25 @@ var level1Sizes = []struct {
 }{
 	{
 		lower: "small",
-		upper: "SMALL_SLICE",
+		upper: "SmallSlice",
 		camel: "Small",
 		size:  10,
 	},
 	{
 		lower: "medium",
-		upper: "MEDIUM_SLICE",
+		upper: "MediumSlice",
 		camel: "Medium",
 		size:  1000,
 	},
 	{
 		lower: "large",
-		upper: "LARGE_SLICE",
+		upper: "LargeSlice",
 		camel: "Large",
 		size:  100000,
 	},
 	{
 		lower: "huge",
-		upper: "HUGE_SLICE",
+		upper: "HugeSlice",
 		camel: "Huge",
 		size:  10000000,
 	},
