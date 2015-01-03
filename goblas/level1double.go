@@ -2,9 +2,6 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Autogenerate benchmark code
-//go:generate go run ../testblas/benchautogen/autogen_bench_level1double.go -output level1doubleBench_auto_test.go goblas
-
 // Uses the netlib standard. Other implementations may differ. Difference
 // is that the code panics for n < 0 and incx == 0 rather than returning zero.
 // (Documentation says incx must not be zero)
