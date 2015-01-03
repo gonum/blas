@@ -6,8 +6,11 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
+	"go/format"
 	"io"
+	"log"
 	"os"
 	"strconv"
 )
@@ -172,10 +175,15 @@ func main() {
 		fmt.Fprintf(os.Stderr, "usage: %s pkgname\n", os.Args[0])
 		os.Exit(2)
 	}
-	if err := level1(os.Stdout, os.Args[1]); err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	var b bytes.Buffer
+	if err := level1(&b, os.Args[1]); err != nil {
+		log.Fatalf("generating level1 benchmark failed: %v\n", err)
 	}
+	src, err := format.Source(b.Bytes())
+	if err != nil {
+		log.Fatalf("formatting source failed: %v\n", err)
+	}
+	os.Stdout.Write(src)
 }
 
 func printHeader(f io.Writer, name string) error {
