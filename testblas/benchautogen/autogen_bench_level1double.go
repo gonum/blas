@@ -7,6 +7,7 @@ package main
 
 import (
 	"bytes"
+	"flag"
 	"fmt"
 	"go/format"
 	"io"
@@ -14,6 +15,8 @@ import (
 	"os"
 	"strconv"
 )
+
+var output = flag.String("output", "", "output file name")
 
 var copyrightnotice = `// Copyright 2014 The Gonum Authors. All rights reserved.
 // Use of this code is governed by a BSD-style
@@ -171,19 +174,36 @@ var level1Functions = []level1functionStruct{
 }
 
 func main() {
-	if len(os.Args) < 2 {
+	flag.Parse()
+	args := flag.Args()
+	if len(args) == 0 {
 		fmt.Fprintf(os.Stderr, "usage: %s pkgname\n", os.Args[0])
+		flag.PrintDefaults()
 		os.Exit(2)
 	}
+
+	f := os.Stdout
+	if *output != "" {
+		var err error
+		f, err = os.Create(*output)
+		if err != nil {
+			log.Fatalf("creating %s failed: %v\n", *output, err)
+		}
+		defer func() {
+			if err := f.Close(); err != nil {
+				log.Fatalf("closing %s failed: %v\n", *output, err)
+			}
+		}()
+	}
 	var b bytes.Buffer
-	if err := level1(&b, os.Args[1]); err != nil {
+	if err := level1(&b, args[0]); err != nil {
 		log.Fatalf("generating level1 benchmark failed: %v\n", err)
 	}
 	src, err := format.Source(b.Bytes())
 	if err != nil {
 		log.Fatalf("formatting source failed: %v\n", err)
 	}
-	os.Stdout.Write(src)
+	f.Write(src)
 }
 
 func printHeader(f io.Writer, name string) error {

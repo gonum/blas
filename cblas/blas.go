@@ -4,6 +4,9 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
+// Autogenerate benchmark code
+//go:generate go run ../testblas/benchautogen/autogen_bench_level1double.go -output level1doubleBench_auto_test.go cblas
+
 // Package cblas implements the blas interfaces.
 package cblas
 
