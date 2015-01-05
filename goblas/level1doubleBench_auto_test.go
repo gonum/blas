@@ -7,20 +7,21 @@
 package goblas
 
 import (
-	"github.com/gonum/blas"
 	"math/rand"
 	"testing"
+
+	"github.com/gonum/blas"
 )
 
 const (
-	posInc1      = 5
-	posInc2      = 3
-	negInc1      = -3
-	negInc2      = -4
-	SMALL_SLICE  = 10
-	MEDIUM_SLICE = 1000
-	LARGE_SLICE  = 100000
-	HUGE_SLICE   = 10000000
+	posInc1     = 5
+	posInc2     = 3
+	negInc1     = -3
+	negInc2     = -4
+	SmallSlice  = 10
+	MediumSlice = 1000
+	LargeSlice  = 100000
+	HugeSlice   = 10000000
 )
 
 func randomSlice(l, idx int) []float64 {
@@ -42,7 +43,7 @@ func benchmarkDdot(b *testing.B, n int, x []float64, incX int, y []float64, incY
 }
 
 func BenchmarkDdotSmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -52,7 +53,7 @@ func BenchmarkDdotSmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDdotSmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -62,7 +63,7 @@ func BenchmarkDdotSmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDdotSmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -72,7 +73,7 @@ func BenchmarkDdotSmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDdotSmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -82,7 +83,7 @@ func BenchmarkDdotSmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDdotMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -92,7 +93,7 @@ func BenchmarkDdotMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDdotMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -102,7 +103,7 @@ func BenchmarkDdotMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDdotMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -112,7 +113,7 @@ func BenchmarkDdotMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDdotMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -122,7 +123,7 @@ func BenchmarkDdotMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDdotLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -132,7 +133,7 @@ func BenchmarkDdotLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDdotLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -142,7 +143,7 @@ func BenchmarkDdotLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDdotLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -152,7 +153,7 @@ func BenchmarkDdotLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDdotLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -162,7 +163,7 @@ func BenchmarkDdotLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDdotHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -172,7 +173,7 @@ func BenchmarkDdotHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDdotHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -182,7 +183,7 @@ func BenchmarkDdotHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDdotHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -192,7 +193,7 @@ func BenchmarkDdotHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDdotHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -210,7 +211,7 @@ func benchmarkDnrm2(b *testing.B, n int, x []float64, incX int) {
 }
 
 func BenchmarkDnrm2SmallUnitaryInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -218,7 +219,7 @@ func BenchmarkDnrm2SmallUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDnrm2SmallPosInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -226,7 +227,7 @@ func BenchmarkDnrm2SmallPosInc(b *testing.B) {
 }
 
 func BenchmarkDnrm2MediumUnitaryInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -234,7 +235,7 @@ func BenchmarkDnrm2MediumUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDnrm2MediumPosInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -242,7 +243,7 @@ func BenchmarkDnrm2MediumPosInc(b *testing.B) {
 }
 
 func BenchmarkDnrm2LargeUnitaryInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -250,7 +251,7 @@ func BenchmarkDnrm2LargeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDnrm2LargePosInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -258,7 +259,7 @@ func BenchmarkDnrm2LargePosInc(b *testing.B) {
 }
 
 func BenchmarkDnrm2HugeUnitaryInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -266,7 +267,7 @@ func BenchmarkDnrm2HugeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDnrm2HugePosInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -282,7 +283,7 @@ func benchmarkDasum(b *testing.B, n int, x []float64, incX int) {
 }
 
 func BenchmarkDasumSmallUnitaryInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -290,7 +291,7 @@ func BenchmarkDasumSmallUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDasumSmallPosInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -298,7 +299,7 @@ func BenchmarkDasumSmallPosInc(b *testing.B) {
 }
 
 func BenchmarkDasumMediumUnitaryInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -306,7 +307,7 @@ func BenchmarkDasumMediumUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDasumMediumPosInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -314,7 +315,7 @@ func BenchmarkDasumMediumPosInc(b *testing.B) {
 }
 
 func BenchmarkDasumLargeUnitaryInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -322,7 +323,7 @@ func BenchmarkDasumLargeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDasumLargePosInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -330,7 +331,7 @@ func BenchmarkDasumLargePosInc(b *testing.B) {
 }
 
 func BenchmarkDasumHugeUnitaryInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -338,7 +339,7 @@ func BenchmarkDasumHugeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDasumHugePosInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -354,7 +355,7 @@ func benchmarkIdamax(b *testing.B, n int, x []float64, incX int) {
 }
 
 func BenchmarkIdamaxSmallUnitaryInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -362,7 +363,7 @@ func BenchmarkIdamaxSmallUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkIdamaxSmallPosInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -370,7 +371,7 @@ func BenchmarkIdamaxSmallPosInc(b *testing.B) {
 }
 
 func BenchmarkIdamaxMediumUnitaryInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -378,7 +379,7 @@ func BenchmarkIdamaxMediumUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkIdamaxMediumPosInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -386,7 +387,7 @@ func BenchmarkIdamaxMediumPosInc(b *testing.B) {
 }
 
 func BenchmarkIdamaxLargeUnitaryInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -394,7 +395,7 @@ func BenchmarkIdamaxLargeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkIdamaxLargePosInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -402,7 +403,7 @@ func BenchmarkIdamaxLargePosInc(b *testing.B) {
 }
 
 func BenchmarkIdamaxHugeUnitaryInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 
@@ -410,7 +411,7 @@ func BenchmarkIdamaxHugeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkIdamaxHugePosInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 
@@ -426,7 +427,7 @@ func benchmarkDswap(b *testing.B, n int, x []float64, incX int, y []float64, inc
 }
 
 func BenchmarkDswapSmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -436,7 +437,7 @@ func BenchmarkDswapSmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDswapSmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -446,7 +447,7 @@ func BenchmarkDswapSmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDswapSmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -456,7 +457,7 @@ func BenchmarkDswapSmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDswapSmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -466,7 +467,7 @@ func BenchmarkDswapSmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDswapMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -476,7 +477,7 @@ func BenchmarkDswapMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDswapMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -486,7 +487,7 @@ func BenchmarkDswapMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDswapMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -496,7 +497,7 @@ func BenchmarkDswapMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDswapMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -506,7 +507,7 @@ func BenchmarkDswapMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDswapLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -516,7 +517,7 @@ func BenchmarkDswapLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDswapLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -526,7 +527,7 @@ func BenchmarkDswapLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDswapLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -536,7 +537,7 @@ func BenchmarkDswapLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDswapLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -546,7 +547,7 @@ func BenchmarkDswapLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDswapHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -556,7 +557,7 @@ func BenchmarkDswapHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDswapHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -566,7 +567,7 @@ func BenchmarkDswapHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDswapHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -576,7 +577,7 @@ func BenchmarkDswapHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDswapHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -594,7 +595,7 @@ func benchmarkDcopy(b *testing.B, n int, x []float64, incX int, y []float64, inc
 }
 
 func BenchmarkDcopySmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -604,7 +605,7 @@ func BenchmarkDcopySmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDcopySmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -614,7 +615,7 @@ func BenchmarkDcopySmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDcopySmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -624,7 +625,7 @@ func BenchmarkDcopySmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDcopySmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -634,7 +635,7 @@ func BenchmarkDcopySmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDcopyMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -644,7 +645,7 @@ func BenchmarkDcopyMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDcopyMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -654,7 +655,7 @@ func BenchmarkDcopyMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDcopyMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -664,7 +665,7 @@ func BenchmarkDcopyMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDcopyMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -674,7 +675,7 @@ func BenchmarkDcopyMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDcopyLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -684,7 +685,7 @@ func BenchmarkDcopyLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDcopyLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -694,7 +695,7 @@ func BenchmarkDcopyLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDcopyLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -704,7 +705,7 @@ func BenchmarkDcopyLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDcopyLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -714,7 +715,7 @@ func BenchmarkDcopyLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDcopyHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -724,7 +725,7 @@ func BenchmarkDcopyHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDcopyHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -734,7 +735,7 @@ func BenchmarkDcopyHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDcopyHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -744,7 +745,7 @@ func BenchmarkDcopyHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDcopyHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -762,7 +763,7 @@ func benchmarkDaxpy(b *testing.B, n int, alpha float64, x []float64, incX int, y
 }
 
 func BenchmarkDaxpySmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -772,7 +773,7 @@ func BenchmarkDaxpySmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDaxpySmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -782,7 +783,7 @@ func BenchmarkDaxpySmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDaxpySmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -792,7 +793,7 @@ func BenchmarkDaxpySmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDaxpySmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -802,7 +803,7 @@ func BenchmarkDaxpySmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDaxpyMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -812,7 +813,7 @@ func BenchmarkDaxpyMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDaxpyMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -822,7 +823,7 @@ func BenchmarkDaxpyMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDaxpyMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -832,7 +833,7 @@ func BenchmarkDaxpyMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDaxpyMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -842,7 +843,7 @@ func BenchmarkDaxpyMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDaxpyLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -852,7 +853,7 @@ func BenchmarkDaxpyLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDaxpyLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -862,7 +863,7 @@ func BenchmarkDaxpyLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDaxpyLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -872,7 +873,7 @@ func BenchmarkDaxpyLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDaxpyLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -882,7 +883,7 @@ func BenchmarkDaxpyLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDaxpyHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -892,7 +893,7 @@ func BenchmarkDaxpyHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDaxpyHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -902,7 +903,7 @@ func BenchmarkDaxpyHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDaxpyHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -912,7 +913,7 @@ func BenchmarkDaxpyHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDaxpyHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -930,7 +931,7 @@ func benchmarkDrot(b *testing.B, n int, x []float64, incX int, y []float64, incY
 }
 
 func BenchmarkDrotSmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -941,7 +942,7 @@ func BenchmarkDrotSmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotSmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -952,7 +953,7 @@ func BenchmarkDrotSmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotSmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -963,7 +964,7 @@ func BenchmarkDrotSmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotSmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -974,7 +975,7 @@ func BenchmarkDrotSmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -985,7 +986,7 @@ func BenchmarkDrotMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -996,7 +997,7 @@ func BenchmarkDrotMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1007,7 +1008,7 @@ func BenchmarkDrotMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1018,7 +1019,7 @@ func BenchmarkDrotMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1029,7 +1030,7 @@ func BenchmarkDrotLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1040,7 +1041,7 @@ func BenchmarkDrotLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1051,7 +1052,7 @@ func BenchmarkDrotLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1062,7 +1063,7 @@ func BenchmarkDrotLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1073,7 +1074,7 @@ func BenchmarkDrotHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1084,7 +1085,7 @@ func BenchmarkDrotHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1095,7 +1096,7 @@ func BenchmarkDrotHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1114,7 +1115,7 @@ func benchmarkDrotmOffDia(b *testing.B, n int, x []float64, incX int, y []float6
 }
 
 func BenchmarkDrotmOffDiaSmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1124,7 +1125,7 @@ func BenchmarkDrotmOffDiaSmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaSmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1134,7 +1135,7 @@ func BenchmarkDrotmOffDiaSmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaSmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1144,7 +1145,7 @@ func BenchmarkDrotmOffDiaSmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaSmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1154,7 +1155,7 @@ func BenchmarkDrotmOffDiaSmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1164,7 +1165,7 @@ func BenchmarkDrotmOffDiaMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1174,7 +1175,7 @@ func BenchmarkDrotmOffDiaMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1184,7 +1185,7 @@ func BenchmarkDrotmOffDiaMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1194,7 +1195,7 @@ func BenchmarkDrotmOffDiaMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1204,7 +1205,7 @@ func BenchmarkDrotmOffDiaLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1214,7 +1215,7 @@ func BenchmarkDrotmOffDiaLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1224,7 +1225,7 @@ func BenchmarkDrotmOffDiaLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1234,7 +1235,7 @@ func BenchmarkDrotmOffDiaLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1244,7 +1245,7 @@ func BenchmarkDrotmOffDiaHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1254,7 +1255,7 @@ func BenchmarkDrotmOffDiaHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1264,7 +1265,7 @@ func BenchmarkDrotmOffDiaHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmOffDiaHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1282,7 +1283,7 @@ func benchmarkDrotmDia(b *testing.B, n int, x []float64, incX int, y []float64, 
 }
 
 func BenchmarkDrotmDiaSmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1292,7 +1293,7 @@ func BenchmarkDrotmDiaSmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaSmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1302,7 +1303,7 @@ func BenchmarkDrotmDiaSmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaSmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1312,7 +1313,7 @@ func BenchmarkDrotmDiaSmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaSmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1322,7 +1323,7 @@ func BenchmarkDrotmDiaSmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1332,7 +1333,7 @@ func BenchmarkDrotmDiaMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1342,7 +1343,7 @@ func BenchmarkDrotmDiaMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1352,7 +1353,7 @@ func BenchmarkDrotmDiaMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1362,7 +1363,7 @@ func BenchmarkDrotmDiaMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1372,7 +1373,7 @@ func BenchmarkDrotmDiaLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1382,7 +1383,7 @@ func BenchmarkDrotmDiaLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1392,7 +1393,7 @@ func BenchmarkDrotmDiaLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1402,7 +1403,7 @@ func BenchmarkDrotmDiaLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1412,7 +1413,7 @@ func BenchmarkDrotmDiaHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1422,7 +1423,7 @@ func BenchmarkDrotmDiaHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1432,7 +1433,7 @@ func BenchmarkDrotmDiaHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmDiaHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1450,7 +1451,7 @@ func benchmarkDrotmResc(b *testing.B, n int, x []float64, incX int, y []float64,
 }
 
 func BenchmarkDrotmRescSmallBothUnitary(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1460,7 +1461,7 @@ func BenchmarkDrotmRescSmallBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmRescSmallIncUni(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1470,7 +1471,7 @@ func BenchmarkDrotmRescSmallIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmRescSmallUniInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1480,7 +1481,7 @@ func BenchmarkDrotmRescSmallUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmRescSmallBothInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1490,7 +1491,7 @@ func BenchmarkDrotmRescSmallBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmRescMediumBothUnitary(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1500,7 +1501,7 @@ func BenchmarkDrotmRescMediumBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmRescMediumIncUni(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1510,7 +1511,7 @@ func BenchmarkDrotmRescMediumIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmRescMediumUniInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1520,7 +1521,7 @@ func BenchmarkDrotmRescMediumUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmRescMediumBothInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1530,7 +1531,7 @@ func BenchmarkDrotmRescMediumBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmRescLargeBothUnitary(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1540,7 +1541,7 @@ func BenchmarkDrotmRescLargeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmRescLargeIncUni(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1550,7 +1551,7 @@ func BenchmarkDrotmRescLargeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmRescLargeUniInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1560,7 +1561,7 @@ func BenchmarkDrotmRescLargeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmRescLargeBothInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1570,7 +1571,7 @@ func BenchmarkDrotmRescLargeBothInc(b *testing.B) {
 }
 
 func BenchmarkDrotmRescHugeBothUnitary(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1580,7 +1581,7 @@ func BenchmarkDrotmRescHugeBothUnitary(b *testing.B) {
 }
 
 func BenchmarkDrotmRescHugeIncUni(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := 1
@@ -1590,7 +1591,7 @@ func BenchmarkDrotmRescHugeIncUni(b *testing.B) {
 }
 
 func BenchmarkDrotmRescHugeUniInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1600,7 +1601,7 @@ func BenchmarkDrotmRescHugeUniInc(b *testing.B) {
 }
 
 func BenchmarkDrotmRescHugeBothInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	incY := negInc1
@@ -1618,7 +1619,7 @@ func benchmarkDscal(b *testing.B, n int, alpha float64, x []float64, incX int) {
 }
 
 func BenchmarkDscalSmallUnitaryInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	alpha := 2.4
@@ -1626,7 +1627,7 @@ func BenchmarkDscalSmallUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDscalSmallPosInc(b *testing.B) {
-	n := SMALL_SLICE
+	n := SmallSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	alpha := 2.4
@@ -1634,7 +1635,7 @@ func BenchmarkDscalSmallPosInc(b *testing.B) {
 }
 
 func BenchmarkDscalMediumUnitaryInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	alpha := 2.4
@@ -1642,7 +1643,7 @@ func BenchmarkDscalMediumUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDscalMediumPosInc(b *testing.B) {
-	n := MEDIUM_SLICE
+	n := MediumSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	alpha := 2.4
@@ -1650,7 +1651,7 @@ func BenchmarkDscalMediumPosInc(b *testing.B) {
 }
 
 func BenchmarkDscalLargeUnitaryInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	alpha := 2.4
@@ -1658,7 +1659,7 @@ func BenchmarkDscalLargeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDscalLargePosInc(b *testing.B) {
-	n := LARGE_SLICE
+	n := LargeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	alpha := 2.4
@@ -1666,7 +1667,7 @@ func BenchmarkDscalLargePosInc(b *testing.B) {
 }
 
 func BenchmarkDscalHugeUnitaryInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := 1
 	x := randomSlice(n, incX)
 	alpha := 2.4
@@ -1674,7 +1675,7 @@ func BenchmarkDscalHugeUnitaryInc(b *testing.B) {
 }
 
 func BenchmarkDscalHugePosInc(b *testing.B) {
-	n := HUGE_SLICE
+	n := HugeSlice
 	incX := posInc1
 	x := randomSlice(n, incX)
 	alpha := 2.4
