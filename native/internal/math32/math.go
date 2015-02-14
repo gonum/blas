@@ -23,6 +23,11 @@ const (
 	bias    = 127
 )
 
+// Mathematical constants.
+const (
+	Pi = math.Pi
+)
+
 // Abs returns the absolute value of x.
 //
 // Special cases are:
@@ -111,3 +116,33 @@ func IsNaN(f float32) (is bool) {
 
 // NaN returns an IEEE 754 ``not-a-number'' value.
 func NaN() float32 { return math.Float32frombits(unan) }
+
+// Cos returns the cosine of the radian argument x.
+//
+// Special cases are:
+//	Cos(±Inf) = NaN
+//	Cos(NaN) = NaN
+func Cos(x float32) float32 {
+	return float32(math.Cos(float64(x)))
+}
+
+// Sin returns the sine of the radian argument x.
+//
+// Special cases are:
+//	Sin(±0) = ±0
+//	Sin(±Inf) = NaN
+//	Sin(NaN) = NaN
+func Sin(x float32) float32 {
+	return float32(math.Sin(float64(x)))
+}
+
+// Max returns the larger of x or y.
+//
+// Special cases are:
+//	Max(x, +Inf) = Max(+Inf, x) = +Inf
+//	Max(x, NaN) = Max(NaN, x) = NaN
+//	Max(+0, ±0) = Max(±0, +0) = +0
+//	Max(-0, -0) = -0
+func Max(x, y float32) float32 {
+	return float32(math.Max(float64(x), float64(y)))
+}

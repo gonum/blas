@@ -137,3 +137,13 @@ cat dgemm.go \
       -e 's_^// D_// S_' \
       -e 's_^// d_// s_' \
 >> sgemm.go
+
+
+echo Generating level1single_test.go
+cat level1double_test.go \
+| sed 's_"github.com/gonum/blas/testblas"_testblas "github.com/gonum/blas/testblas/single"_' \
+| sed '/^var impl/d' \
+| sed 's/^\(func Test\)D/\1S/' \
+| gofmt -r 'TestIdamax -> TestIsamax' \
+| goimports \
+> level1single_test.go
