@@ -512,6 +512,54 @@ type DTwoVecAnswer struct {
 }
 
 var DoubleTwoVectorCases = []DoubleTwoVectorCase{
+	// TODO(btracey): Uncomment this test when issue 138 is fixed.
+	/*
+		{
+			Name:  "ZeroN",
+			X:     []float64{},
+			Y:     []float64{},
+			XTmp:  []float64{},
+			YTmp:  []float64{},
+			Incx:  0,
+			Incy:  0,
+			N:     0,
+			Panic: false,
+			DaxpyCases: []DaxpyCase{
+				{
+					Alpha: 1,
+					Ans:   []float64{},
+				},
+			},
+			DdotAns: 0,
+			DswapAns: DTwoVecAnswer{
+				X: []float64{},
+				Y: []float64{},
+			},
+			DcopyAns: DTwoVecAnswer{
+				X: []float64{},
+				Y: []float64{},
+			},
+			DrotCases: []DrotCase{
+				{
+					C:    math.Cos(0),
+					S:    math.Sin(0),
+					XAns: []float64{},
+					YAns: []float64{},
+				},
+			},
+			DrotmCases: []DrotmCase{
+				{
+					P: blas.DrotmParams{
+						Flag: blas.Identity,
+						H:    [4]float64{0.9, 0.1, -0.1, 0.5},
+					},
+					XAns: []float64{},
+					YAns: []float64{},
+					Name: "ZeroN",
+				},
+			},
+		},
+	*/
 	{
 		Name:  "UnitaryInc",
 		X:     []float64{10, 15, -6, 3, 14, 7},
