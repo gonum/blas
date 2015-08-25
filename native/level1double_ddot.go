@@ -14,6 +14,9 @@ func (Implementation) Ddot(n int, x []float64, incX int, y []float64, incY int) 
 	if n < 0 {
 		panic(negativeN)
 	}
+	if n == 0 {
+		return 0
+	}
 	if incX == 0 {
 		panic(zeroIncX)
 	}
