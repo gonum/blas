@@ -14,7 +14,7 @@ sudo BLLIB=/usr/lib/libopenblas.a make alllib
 sudo mv lib/cblas_LINUX.a /usr/lib/libcblas.a
 popd
 popd
-export CGO_LDFLAGS="-L/usr/lib -lopenblas"
+export CGO_LDFLAGS="-L/usr/lib -lopenblas -lm"
 go get github.com/gonum/blas
 pushd cgo
 go install -v -x
