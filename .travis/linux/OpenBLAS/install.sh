@@ -1,28 +1,23 @@
 set -ex
+uname -a
+sudo apt-get remove libblas3gf libatlas3gf-base
 
-# fetch fortran to build OpenBLAS
-sudo apt-get update -qq && sudo apt-get install -qq gfortran
+curl -O http://mirrors.xmission.com/ubuntu/pool/main/b/blas/libblas-common_1.2.20110419-10_amd64.deb
+sudo dpkg -i libblas-common_1.2.20110419-10_amd64.deb
+sudo apt-get install -f
 
-# fetch OpenBLAS
-pushd ~
-sudo git clone --depth=1 git://github.com/xianyi/OpenBLAS
+curl -O http://mirrors.xmission.com/ubuntu/pool/main/b/blas/libblas3_1.2.20110419-10_amd64.deb
+sudo dpkg -i libblas3_1.2.20110419-10_amd64.deb
+sudo apt-get install -f
 
-# make OpenBLAS
-pushd OpenBLAS
-echo OpenBLAS $(git rev-parse HEAD)
-sudo make FC=gfortran &> /dev/null && sudo make PREFIX=/usr install
-popd
+curl -O http://mirrors.xmission.com/ubuntu/pool/universe/b/blas/libblas3gf_1.2.20110419-10_all.deb
+sudo dpkg -i libblas3gf_1.2.20110419-10_all.deb
+sudo apt-get install -f
 
-# fetch cblas reference lib
-curl http://www.netlib.org/blas/blast-forum/cblas.tgz | tar -zx
-
-# make cblas and install
-pushd CBLAS
-sudo mv Makefile.LINUX Makefile.in
-sudo BLLIB=/usr/lib/libopenblas.a make alllib
-sudo mv lib/cblas_LINUX.a /usr/lib/libcblas.a
-popd
-popd
+curl -O http://mirrors.xmission.com/ubuntu/pool/universe/o/openblas/libopenblas-base_0.2.14-1ubuntu1_amd64.deb
+sudo dpkg -i libopenblas-base_0.2.14-1ubuntu1_amd64.deb
+sudo apt-get install -f
+sudo ln -s /usr/lib/libopenblas.so.0 /usr/lib/libopenblas.so
 
 # install gonum/blas against OpenBLAS
 export CGO_LDFLAGS="-L/usr/lib -lopenblas"
