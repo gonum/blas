@@ -21,6 +21,10 @@ The promise of stability includes:
 
 ### Exceptions
 
+* Security. A security issue in the package may come to light whose resolution
+  requires breaking compatibility. We reserve the right to address such security
+  issues.
+
 * Unspecified behavior. Programs that depend on unspecified behavior may break
   in future releases.
 
