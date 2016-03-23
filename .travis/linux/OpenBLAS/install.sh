@@ -1,28 +1,31 @@
 set -ex
 
+# remove exiting blas packages to prevent conflicts
+sudo apt-get remove libblas3gf libatlas3gf-base
+
 # fetch fortran to build OpenBLAS
-sudo apt-get update -qq && sudo apt-get install -qq gfortran
+sudo apt-get update -qq
+sudo apt-get install -qq gfortran
 
-# fetch OpenBLAS
-pushd ~
-sudo git clone --depth=1 git://github.com/xianyi/OpenBLAS
+# source for blas and lapack packages
+LAPACK_ROOT="http://mirrors.xmission.com/ubuntu/pool/main/l/lapack"
+OPENBLAS_ROOT="http://mirrors.xmission.com/ubuntu/pool/universe/o/openblas"
 
-# make OpenBLAS
-pushd OpenBLAS
-echo OpenBLAS $(git rev-parse HEAD)
-sudo make FC=gfortran &> /dev/null && sudo make PREFIX=/usr install
-popd
+packagelist=(
+  "$LAPACK_ROOT/libblas-common_3.6.0-2ubuntu2_amd64.deb"
+  "$LAPACK_ROOT/libblas3_3.6.0-2ubuntu2_amd64.deb"
+  "$LAPACK_ROOT/libblas-dev_3.6.0-2ubuntu2_amd64.deb"
+  "$OPENBLAS_ROOT/libopenblas-base_0.2.15-1build1_amd64.deb"
+  "$OPENBLAS_ROOT/libopenblas-dev_0.2.15-1build1_amd64.deb"
+  )
 
-# fetch cblas reference lib
-curl http://www.netlib.org/blas/blast-forum/cblas.tgz | tar -zx
-
-# make cblas and install
-pushd CBLAS
-sudo mv Makefile.LINUX Makefile.in
-sudo BLLIB=/usr/lib/libopenblas.a make alllib
-sudo mv lib/cblas_LINUX.a /usr/lib/libcblas.a
-popd
-popd
+for i in ${packagelist[*]};
+do
+  fn=${i##*/}
+  echo "fetching $fn"
+  curl -O $i
+  sudo dpkg -i $fn
+done
 
 # install gonum/blas against OpenBLAS
 export CGO_LDFLAGS="-L/usr/lib -lopenblas"
