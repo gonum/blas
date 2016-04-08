@@ -1,5 +1,8 @@
+#!/bin/bash
+set -ex
+
 export CGO_LDFLAGS="-framework Accelerate"
-go get github.com/gonum/blas
+source ${TRAVIS_BUILD_DIR}/.travis/$TRAVIS_OS_NAME/install.sh
 pushd cgo
 go install -v -x
 popd
