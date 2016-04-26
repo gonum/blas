@@ -1,32 +1,20 @@
+#!/bin/bash
 set -ex
 
-# fetch fortran to build OpenBLAS
-sudo apt-get update -qq && sudo apt-get install -qq gfortran
+# environment file for the docker container to use
+ENV_FILE=$GOPATH/src/github.com/$TRAVIS_REPO_SLUG/.travis/$TRAVIS_OS_NAME/$BLAS_LIB/env.list
+echo "TRAVIS_REPO_SLUG=$TRAVIS_REPO_SLUG" >> $ENV_FILE
 
-# fetch OpenBLAS
-pushd ~
-sudo git clone --depth=1 git://github.com/xianyi/OpenBLAS
+# fetch repo
+docker pull jonlawlor/gonum-docker-openblas
 
-# make OpenBLAS
-pushd OpenBLAS
-echo OpenBLAS $(git rev-parse HEAD)
-sudo make FC=gfortran &> /dev/null && sudo make PREFIX=/usr install
-popd
+# install go, and get the gonum libs.
+docker_travis_home="/root/gopath/src/github.com/$TRAVIS_REPO_SLUG"
+docker run --name openblas \
+  --env-file $ENV_FILE \
+  -v $GOPATH/src:/root/gopath/src jonlawlor/gonum-docker-openblas \
+  bash -c "eval \"\$(gimme $TRAVIS_GO_VERSION)\" \
+    && source $docker_travis_home/.travis/$TRAVIS_OS_NAME/install.sh \
+    && source $docker_travis_home/.travis/$TRAVIS_OS_NAME/$BLAS_LIB/docker-install.sh"
 
-# fetch cblas reference lib
-curl http://www.netlib.org/blas/blast-forum/cblas.tgz | tar -zx
-
-# make cblas and install
-pushd CBLAS
-sudo mv Makefile.LINUX Makefile.in
-sudo BLLIB=/usr/lib/libopenblas.a make alllib
-sudo mv lib/cblas_LINUX.a /usr/lib/libcblas.a
-popd
-popd
-
-# install gonum/blas against OpenBLAS
-export CGO_LDFLAGS="-L/usr/lib -lopenblas"
-go get github.com/gonum/blas
-pushd cgo
-go install -v -x
-popd
+docker commit openblas jonlawlor/gonum-docker-openblas:temp
