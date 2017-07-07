@@ -12,7 +12,7 @@ import (
 	"github.com/gonum/floats"
 )
 
-const tol = 1e-7
+const tol = 1e-6
 
 func TestAbs(t *testing.T) {
 	f := func(x float32) bool {
